@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    body{
+            text-align: center;
+            
+            background-color: lightyellow;
+            border: 2px solid black;
+            margin-left: 450px;
+            margin-right: 450px;
+            
+
+        }
+        h2{
+            
+            /* margin-left: 400px;
+            margin-right: 400px; */
+            /* height: 30; */
+            text-align: center;
+            background-color: rgb(21, 205, 229);
+            /* padding: 10px; */
+            /* border-radius: 10px; */
+            /* box-sizing: border-box; */
+        }
+        #roomType, #nights, #breakfast, #airport, #laundary, #calculate{
+            background-color: rgb(247, 247, 247);
+            /* margin-left: 10px; */
+            text-align: center;
+            
+        }
+        h3{
+            text-decoration: underline;
+            text-align: center;
+        }
+       
+
+        
+        label{
+            width: 300px;
+            text-align: center;
+            font-size: 20px;
+            /* border-radius: 5px; */
+        }
+    </style>
+   
+</head>
+<body>
+    <div style="background-color:rgb(221, 174, 230);">
+    <h2>Hotel Billing system</h2>
+    <label >Room type:
+        <select name="" id="roomType">
+            <option value="single">Single: Rs 1000 / night </option>
+            <option value="double">Double: Rs 2500 / night </option>
+            <option value="suite">Suite: Rs 4000 / night </option>
+        </select>
+    </label>
+    <br><br>
+    <label for="">Number of nights:<input id="nights" type="number" value="1" min="1"></label>
+    <br><br>
+    <label for=""><input type="checkbox" id="breakfast">Breakfast (Rs 200 / day) </label><br><br>
+    <label for=""><input type ="checkbox" id="airport">Airport Pickup(one-time Rs 800)</label><br><br>
+    <label for=""><input type="checkbox" id="laundary">Laundary (Rs 150 / laod)</label><br><br>
+    <button id="calculate">Calculate Bill</button>
+    <h3>Invoice</h3>
+    <pre id="Invoice"></pre>
+    </div>
+    <script>
+
+        const roomType=document.getElementById("roomType");
+        const nights=document.getElementById("nights");
+        const breakfast=document.getElementById("breakfast");
+        const airport=document.getElementById("airport");
+        const laundary=document.getElementById("laundary");
+        const Invoice=document.getElementById("Invoice");
+        const calculate=document.getElementById("calculate");
+
+        const roomPrices={
+            single:1000,
+            double:2500,
+            suite:4000
+
+        };
+        calculate.addEventListener('click',(()=>{
+            const n=Number(nights.value);
+            if(Number.isNaN(n)||n<1){
+                Invoice.textContent='enter valid number of nights(>=1).';
+                return;
+
+            }
+            const selectRoom=roomType.value;
+            const roomRate=roomPrices[selectRoom];
+            const roomCost=roomRate*n;
+            const breakfastCost=breakfast.checked ? 200*n:0;
+            const laundaryCost=laundary.checked ? 150 : 0;
+            const airportCost=airport.checked ? 800 :0;
+            const totalCost=roomCost+breakfastCost+laundaryCost+airportCost;
+            const Tax=Math.round(totalCost*0.12);
+            const grandtotal=totalCost+Tax;
+            let txt="";
+            txt += `Hotel Invoice\n`;
+            txt+=`-----------------------\n`;
+            txt+=`Room Type: ${selectRoom} \n`;
+            txt+=`Number of nights: ${n} \n`;
+            txt+=`Breakfast:${breakfastCost}\n`;
+            txt+=`Room Cost: Rs ${roomCost} \n`;
+            txt+=`Airport Pickup:${airportCost}\n`;
+            txt+=`Laundary Cost: Rs ${laundaryCost} \n`;
+            txt+=`Total Cost: Rs${totalCost}\n`;
+            txt+=`Tax: Rs ${Tax}\n`;
+            txt+=`Grand Total:Rs ${grandtotal}\n`;
+            Invoice.textContent=txt;
+
+
+            
+            
+
+        }))
+
+    </script>
+</body>
+</html>
